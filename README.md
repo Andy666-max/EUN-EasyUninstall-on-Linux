@@ -18,6 +18,11 @@
 
 - 🔔顶部可选展示软件类型（不启用复选框就只显示桌面能出现的软件）
 ## 安装
+本软件仅支持Ubuntu/Debian系Linux
+
 下载好.deb包后直接双击或使用命令
 
       sudo dpkg -i easy-uninstall_1.0-1_amd64
+      
+## 开源协议
+本软件使用MIT开源协议
