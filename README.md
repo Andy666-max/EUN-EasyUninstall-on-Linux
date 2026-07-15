@@ -25,4 +25,4 @@
       sudo dpkg -i easy-uninstall_1.0-1_amd64
       
 ## 开源协议
-本软件使用MIT开源协议
+本软件使用MIT协议开源
