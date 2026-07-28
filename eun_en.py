@@ -1,4 +1,15 @@
 #!/usr/bin/env python3
+print("Script started")
+import os
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    # 运行在 PyInstaller 打包环境中，将路径指向系统的 GTK 资源
+    os.environ['GDK_PIXBUF_MODULE_FILE'] = '/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache'
+    os.environ['GTK_PATH'] = '/usr/lib/x86_64-linux-gnu/gtk-3.0'
+    os.environ['GI_TYPELIB_PATH'] = '/usr/lib/x86_64-linux-gnu/girepository-1.0'
+    # 让 GTK 能找到系统图标主题
+    os.environ['XDG_DATA_DIRS'] = '/usr/share:/usr/local/share'
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
@@ -14,8 +25,9 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gtk, GdkPixbuf, Gdk
+print("imported lib")
 #--桌面图标修复---
-app = Gtk.Application(application_id='io.github.andy.EasyUninstall')
+#app = Gtk.Application(application_id='io.github.andy.EasyUninstall')
 # 0.生成空白占位符
 def create_gear_pixbuf(size):
     """生成一个黑色齿轮图标的 Pixbuf，尺寸 size x size"""
@@ -151,9 +163,9 @@ def build_pkg_icon_map(icon_size=30, batch_size=200):
 # ------------------------------------------------------------
 # 2. 主窗口（默认只显示有图标软件，“显示全部软件”复选框）
 # ------------------------------------------------------------
-class PkgIconWindow(Gtk.ApplicationWindow):
-    def __init__(self,application):
-        super().__init__(application=application,title="Easy Uninstall")
+class PkgIconWindow(Gtk.Window):
+    def __init__(self):
+        super().__init__(title="Easy Uninstall")
         self.set_default_size(800, 600)
         self.set_border_width(10)
 
@@ -466,9 +478,17 @@ class PkgIconWindow(Gtk.ApplicationWindow):
             self.statusbar.push(0, error_msg or "Unknow error")
 #--桌面图标修补后半部--
 #---------程序入口--------------
-def on_activate(app):
-    win = PkgIconWindow(app)
+#def on_activate(app):
+ #   win = PkgIconWindow(app)
+  #  win.show_all()
+#if __name__ == "__main__":
+ #   app.connect('activate',on_activate)
+  #  app.run(None)
+def main():
+    win = PkgIconWindow()          # 注意：构造函数不再需要 application 参数
+    win.connect("destroy", Gtk.main_quit)   # 关闭窗口时退出主循环
     win.show_all()
+    Gtk.main()
 if __name__ == "__main__":
-    app.connect('activate',on_activate)
-    app.run(None)
+    main()
+    print("progame started")
